@@ -12,11 +12,7 @@ from cv_processor import (
 from ocr_engine import is_request_popup, match_troop_request, recognize_text
 from screen_capture import GameWindow
 from utils.common import random_sleep
-from utils.config import (
-    DONATE_BUTTON_TEMPLATE, REQUEST_POPUP_TEMPLATE,
-    CLOSE_BUTTON_TEMPLATE,
-    IDLE_SLEEP_MIN, IDLE_SLEEP_MAX,
-)
+
 from utils.logger import get_logger
 
 logger = get_logger("core_logic")
@@ -109,14 +105,7 @@ class DonateEngine:
             sx, sy = self.game_window.window_to_screen(int(w * 0.5), int(h * 0.75))
             human_click_region(sx, sy, rand=20)
 
-        # 关闭弹窗
-        close_tpl = load_template(CLOSE_BUTTON_TEMPLATE)
-        if close_tpl is not None:
-            close_box = match_template(frame, close_tpl)
-            if close_box:
-                x, y, w, h, _ = close_box
-                sx, sy = self.game_window.window_to_screen(x + w // 2, y + h // 2)
-                human_click_region(sx, sy)
+
 
         random_sleep()
 

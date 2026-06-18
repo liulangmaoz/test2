@@ -44,6 +44,4 @@ TROOP_KEYWORD_MAP = {
 REQUEST_POPUP_KEYWORDS = ["需要", "增援", "部落增援", "请求", "要"]
 REQUEST_POPUP_TEMPLATE = os.path.join(TEMPLATE_DIR, "request_popup.png")
 DONATE_BUTTON_TEMPLATE = os.path.join(TEMPLATE_DIR, "donate_button.png")
-CLOSE_BUTTON_TEMPLATE = os.path.join(TEMPLATE_DIR, "close_button.png")
-
 LOG_FILE = os.path.join(BASE_DIR, "data", "coc_donate.log")
