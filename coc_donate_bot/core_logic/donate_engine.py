@@ -12,7 +12,10 @@ from cv_processor import (
 from ocr_engine import is_request_popup, match_troop_request, recognize_text
 from screen_capture import GameWindow
 from utils.common import random_sleep
-
+from utils.config import (
+    DONATE_BUTTON_TEMPLATE, REQUEST_POPUP_TEMPLATE,
+    IDLE_SLEEP_MIN, IDLE_SLEEP_MAX,
+)
 from utils.logger import get_logger
 
 logger = get_logger("core_logic")
