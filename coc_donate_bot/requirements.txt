@@ -1,0 +1,9 @@
+opencv-python==4.10.0.84
+opencv-contrib-python==4.10.0.84
+numpy==1.26.4
+mss==9.0.1
+pygetwindow==0.0.9
+pyautogui==0.9.54
+pynput==1.7.7
+easyocr==1.7.2
+Pillow==10.4.0
