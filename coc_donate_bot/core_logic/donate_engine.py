@@ -1,4 +1,11 @@
 """核心捐兵业务逻辑：循环调度 + 决策判断。"""
+import os
+import sys
+
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import threading
 import time
 from typing import Callable, Optional

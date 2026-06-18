@@ -1,4 +1,11 @@
 """极简桌面 UI 面板：启停按钮 + 状态显示。"""
+import os
+import sys
+
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import tkinter as tk
 from tkinter import ttk
 

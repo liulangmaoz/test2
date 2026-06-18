@@ -1,5 +1,11 @@
 """窗口截图模块：查找雷电模拟器/COC游戏窗口并精准截取。"""
 import os
+import sys
+
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 from typing import Optional, Tuple
 
 import numpy as np

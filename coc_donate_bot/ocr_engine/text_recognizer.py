@@ -1,4 +1,11 @@
 """OCR 文字识别模块：本地离线识别 + 关键词匹配。"""
+import os
+import sys
+
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 from typing import List, Optional
 
 import numpy as np
