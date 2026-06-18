@@ -99,18 +99,26 @@ class DonateEngine:
         if donate_tpl is not None:
             box = match_template(frame, donate_tpl)
             if box:
-                x, y, w, h, _ = box
+                x, y, w, h, conf = box
                 sx, sy = self.game_window.window_to_screen(x + w // 2, y + h // 2)
+                logger.info(f"found donate button at ({sx},{sy}) conf={conf:.3f}")
                 if human_click_region(sx, sy):
                     donated = True
                     self.donate_count += 1
                     logger.info("donated %s", troop)
                     time.sleep(0.3)
+            else:
+                logger.info("donate button template not matched, using fallback")
+        else:
+            logger.info("donate button template file not found: %s", cfg.DONATE_BUTTON_TEMPLATE)
         if not donated:
             # 兜底：点击画面中央区域（用户需要自行替换坐标/模板）
-            h, w = frame.shape[:2]
-            sx, sy = self.game_window.window_to_screen(int(w * 0.5), int(h * 0.75))
-            human_click_region(sx, sy, rand=20)
+            # 暂时禁用，等待模板匹配成功
+            logger.info("donate button not found, skipping")
+            # h, w = frame.shape[:2]
+            # sx, sy = self.game_window.window_to_screen(int(w * 0.5), int(h * 0.75))
+            # logger.info(f"using fallback click at ({sx},{sy})")
+            # human_click_region(sx, sy, rand=20)
 
 
 
