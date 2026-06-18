@@ -11,9 +11,7 @@ import random
 import time
 from typing import Tuple
 
-from utils.config import (
-    MOUSE_MOVE_DURATION_MIN, MOUSE_MOVE_DURATION_MAX, CLICK_OFFSET_PIXEL,
-)
+from utils import config as cfg
 from utils.logger import get_logger
 
 logger = get_logger("action")
@@ -54,13 +52,13 @@ def move_to(x: int, y: int) -> bool:
     try:
         cur = pg.position()
         start = (int(cur[0]), int(cur[1]))
-        end = (int(x) + random.randint(-CLICK_OFFSET_PIXEL, CLICK_OFFSET_PIXEL),
-               int(y) + random.randint(-CLICK_OFFSET_PIXEL, CLICK_OFFSET_PIXEL))
+        end = (int(x) + random.randint(-cfg.CLICK_OFFSET_PIXEL, cfg.CLICK_OFFSET_PIXEL),
+               int(y) + random.randint(-cfg.CLICK_OFFSET_PIXEL, cfg.CLICK_OFFSET_PIXEL))
         dist = math.hypot(end[0] - start[0], end[1] - start[1])
         steps = max(8, min(30, int(dist / 25)))
         points = _curve_points(start, end, steps)
-        duration = random.uniform(MOUSE_MOVE_DURATION_MIN,
-                                  MOUSE_MOVE_DURATION_MAX)
+        duration = random.uniform(cfg.MOUSE_MOVE_DURATION_MIN,
+                                  cfg.MOUSE_MOVE_DURATION_MAX)
         step_t = duration / steps
         for px, py in points:
             pg.moveTo(px, py, duration=0)

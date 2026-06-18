@@ -19,10 +19,7 @@ from cv_processor import (
 from ocr_engine import is_request_popup, match_troop_request, recognize_text
 from screen_capture import GameWindow
 from utils.common import random_sleep
-from utils.config import (
-    DONATE_BUTTON_TEMPLATE, REQUEST_POPUP_TEMPLATE,
-    IDLE_SLEEP_MIN, IDLE_SLEEP_MAX,
-)
+from utils import config as cfg
 from utils.logger import get_logger
 
 logger = get_logger("core_logic")
@@ -65,7 +62,7 @@ class DonateEngine:
         """识别 + 决策 + 操作 单轮逻辑。"""
         if not self.game_window.try_refresh() or self.game_window.region is None:
             self._set_status("未找到游戏窗口")
-            random_sleep(IDLE_SLEEP_MIN, IDLE_SLEEP_MAX)
+            random_sleep(cfg.IDLE_SLEEP_MIN, cfg.IDLE_SLEEP_MAX)
             return
 
         frame = self.game_window.capture()
@@ -73,7 +70,7 @@ class DonateEngine:
             self._set_status("截图失败，重试中")
             return
 
-        popup_tpl = load_template(REQUEST_POPUP_TEMPLATE)
+        popup_tpl = load_template(cfg.REQUEST_POPUP_TEMPLATE)
         popup_box = None
         if popup_tpl is not None:
             popup_box = match_template(frame, popup_tpl)
@@ -86,7 +83,7 @@ class DonateEngine:
 
         if not has_request:
             self._set_status("待机中，未发现增援请求")
-            random_sleep(IDLE_SLEEP_MIN, IDLE_SLEEP_MAX)
+            random_sleep(cfg.IDLE_SLEEP_MIN, cfg.IDLE_SLEEP_MAX)
             return
 
         troop = match_troop_request(lines)
@@ -97,7 +94,7 @@ class DonateEngine:
             self._set_status(f"发现请求: {troop}")
 
         # 尝试点击捐兵按钮
-        donate_tpl = load_template(DONATE_BUTTON_TEMPLATE)
+        donate_tpl = load_template(cfg.DONATE_BUTTON_TEMPLATE)
         donated = False
         if donate_tpl is not None:
             box = match_template(frame, donate_tpl)
@@ -127,5 +124,5 @@ class DonateEngine:
             except Exception as exc:
                 logger.error("loop exception: %s", exc)
                 self._set_status("识别异常，自动跳过")
-                random_sleep(IDLE_SLEEP_MIN, IDLE_SLEEP_MAX)
+                random_sleep(cfg.IDLE_SLEEP_MIN, cfg.IDLE_SLEEP_MAX)
         self._set_status("已退出")

@@ -10,7 +10,7 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-from utils.config import WINDOW_KEYWORDS
+from utils import config as cfg
 from utils.logger import get_logger
 
 logger = get_logger("screen_capture")
@@ -53,7 +53,7 @@ def find_game_window():
             continue
         if not title:
             continue
-        for kw in WINDOW_KEYWORDS:
+        for kw in cfg.WINDOW_KEYWORDS:
             if kw.lower() in title.lower():
                 try:
                     if w.width <= 0 or w.height <= 0:

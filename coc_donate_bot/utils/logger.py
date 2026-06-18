@@ -2,7 +2,7 @@
 import logging
 import os
 
-from utils.config import LOG_FILE
+from utils import config as cfg
 
 
 def get_logger(name: str = "coc_donate") -> logging.Logger:
@@ -21,8 +21,8 @@ def get_logger(name: str = "coc_donate") -> logging.Logger:
     logger.addHandler(sh)
 
     try:
-        os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-        fh = logging.FileHandler(LOG_FILE, encoding="utf-8")
+        os.makedirs(os.path.dirname(cfg.LOG_FILE), exist_ok=True)
+        fh = logging.FileHandler(cfg.LOG_FILE, encoding="utf-8")
         fh.setFormatter(fmt)
         logger.addHandler(fh)
     except Exception:

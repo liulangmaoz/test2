@@ -10,7 +10,7 @@ from typing import List, Optional
 
 import numpy as np
 
-from utils.config import OCR_MIN_CONFIDENCE, TROOP_KEYWORD_MAP, REQUEST_POPUP_KEYWORDS
+from utils import config as cfg
 from utils.logger import get_logger
 
 logger = get_logger("ocr_engine")
@@ -49,7 +49,7 @@ def recognize_text(frame: np.ndarray) -> List[str]:
         if len(item) < 3:
             continue
         text, conf = item[1], item[2]
-        if conf and float(conf) >= OCR_MIN_CONFIDENCE:
+        if conf and float(conf) >= cfg.OCR_MIN_CONFIDENCE:
             t = str(text).strip()
             if t:
                 lines.append(t)
@@ -61,7 +61,7 @@ def match_troop_request(lines: List[str]) -> Optional[str]:
     if not lines:
         return None
     text = "".join(lines)
-    for troop, keywords in TROOP_KEYWORD_MAP.items():
+    for troop, keywords in cfg.TROOP_KEYWORD_MAP.items():
         for kw in keywords:
             if kw in text:
                 return troop
@@ -72,4 +72,4 @@ def is_request_popup(lines: List[str]) -> bool:
     if not lines:
         return False
     text = "".join(lines)
-    return any(kw in text for kw in REQUEST_POPUP_KEYWORDS)
+    return any(kw in text for kw in cfg.REQUEST_POPUP_KEYWORDS)

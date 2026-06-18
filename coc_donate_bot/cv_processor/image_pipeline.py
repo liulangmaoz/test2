@@ -11,7 +11,7 @@ from typing import Optional, Tuple
 import cv2
 import numpy as np
 
-from utils.config import MATCH_CONFIDENCE_THRESHOLD
+from utils import config as cfg
 from utils.logger import get_logger
 
 logger = get_logger("cv_processor")
@@ -63,7 +63,7 @@ def load_template(template_path: str) -> Optional[np.ndarray]:
 
 
 def match_template(frame: np.ndarray, template: np.ndarray,
-                   threshold: float = MATCH_CONFIDENCE_THRESHOLD
+                   threshold: float = None
                    ) -> Optional[Tuple[int, int, int, int, float]]:
     """在 frame 中匹配 template，返回 (x, y, w, h, confidence) 或 None。"""
     if frame is None or template is None:
@@ -85,7 +85,8 @@ def match_template(frame: np.ndarray, template: np.ndarray,
 
         res = cv2.matchTemplate(f_gray, t_gray, cv2.TM_CCOEFF_NORMED)
         _, max_val, _, max_loc = cv2.minMaxLoc(res)
-        if max_val >= threshold:
+        thresh = threshold if threshold is not None else cfg.MATCH_CONFIDENCE_THRESHOLD
+        if max_val >= thresh:
             x, y = max_loc
             return int(x), int(y), int(tw), int(th), float(max_val)
         return None
@@ -95,11 +96,12 @@ def match_template(frame: np.ndarray, template: np.ndarray,
 
 
 def find_all_matches(frame: np.ndarray, template: np.ndarray,
-                     threshold: float = MATCH_CONFIDENCE_THRESHOLD,
+                     threshold: float = None,
                      nms_dist: int = 20):
     """多目标匹配，返回列表 [(x, y, w, h, conf)]。"""
     if frame is None or template is None:
         return []
+    thresh = threshold if threshold is not None else cfg.MATCH_CONFIDENCE_THRESHOLD
     try:
         if frame.ndim == 3:
             f_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -116,7 +118,7 @@ def find_all_matches(frame: np.ndarray, template: np.ndarray,
             return []
 
         res = cv2.matchTemplate(f_gray, t_gray, cv2.TM_CCOEFF_NORMED)
-        ys, xs = np.where(res >= threshold)
+        ys, xs = np.where(res >= thresh)
         candidates = []
         for x, y in zip(xs, ys):
             candidates.append((int(x), int(y), int(tw), int(th),
